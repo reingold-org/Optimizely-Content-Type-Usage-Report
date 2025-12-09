@@ -1,6 +1,7 @@
+@using EPiServer
 @using EPiServer.Shell.Navigation
 @using EPiServer.Shell.UI.Web.Mvc.Html
-@using EPiServer.Shell.UI.WebComponents
+@using EPiServer.Web
 @using Reingold.Optimizely.Reports.ContentTypeUsage
 
 @model ContentTypeUsageReportViewModel
@@ -86,7 +87,9 @@
                             <tr>
                                 <td style="width: 27%;">@content.ContentLink.ID</td>
                                 <td>@content.LanguageBranch</td>
-                                <td><a href="@string.Format("{0}?language={2}#context=epi.cms.contentdata:///{1}", UriSupport.AbsoluteUrlFromUIBySettings(""), content.ContentLink.ID, content.LanguageBranch)">@content.Name</a></td>
+                                <td><a href="@(UIPathResolver.Instance.CombineWithUIAbsolute($"{content.ContentLink.ID}?language={content.LanguageBranch}#context=epi.cms.contentdata:///{content.ContentLink.ID}"))">
+                                    @content.Name</a>
+                                </td>
                             </tr>
                         }
                     </table>
