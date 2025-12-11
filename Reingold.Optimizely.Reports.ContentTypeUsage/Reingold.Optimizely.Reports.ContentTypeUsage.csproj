@@ -8,7 +8,7 @@
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
 
     <PackageId>Reingold.Optimizely.Reports.ContentTypeUsage</PackageId>
-    <Version>12.0.0</Version>
+    <Version>12.0.1</Version>
     <Authors>Nate Olmsted</Authors>
     <Company>Reingold</Company>
     <Copyright>Copyright © Reingold 2025</Copyright>

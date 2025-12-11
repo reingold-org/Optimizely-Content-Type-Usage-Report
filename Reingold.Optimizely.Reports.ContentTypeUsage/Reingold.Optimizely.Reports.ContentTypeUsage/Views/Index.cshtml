@@ -73,10 +73,11 @@
                 </tr>
                 @foreach (var content in Model.ContentTypeUsages)
                 {
+                    var path = $"?language={content.LanguageBranch}#context=epi.cms.contentdata:///{content.ContentLink.ID}&viewsetting=viewlanguage:///{content.LanguageBranch}";
                     <tr>
                         <td>@content.ContentLink.ID</td>
                         <td>@content.LanguageBranch</td>
-                        <td><a href="@(UIPathResolver.Instance.CombineWithUIAbsolute($"{content.ContentLink.ID}?language={content.LanguageBranch}#context=epi.cms.contentdata:///{content.ContentLink.ID}"))">
+                        <td><a href="@(UIPathResolver.Instance.CombineWithUIAbsolute(path))" target="_blank">
                             @content.Name</a>
                         </td>
                     </tr>
