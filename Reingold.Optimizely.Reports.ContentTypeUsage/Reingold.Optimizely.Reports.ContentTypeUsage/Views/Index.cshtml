@@ -1,0 +1,87 @@
+@using EPiServer
+@using EPiServer.Shell.Navigation
+@using EPiServer.Shell.UI.Web.Mvc.Html
+@using EPiServer.Web
+@using Microsoft.AspNetCore.Razor
+@using Reingold.Optimizely.Reports.ContentTypeUsage
+
+@model ContentTypeUsageReportViewModel
+
+@{
+    Layout = "/CmsUIViews/Views/Shared/CommonLayout.cshtml";
+}
+
+@section title {
+    <title>Content Type Usage</title>
+}
+
+@section header {
+    <style>
+        .list li { list-style-type:disc }
+        .body { margin: 20px }
+        #showReport { margin-top:20px }
+        .results { margin-top:20px }
+        th { text-align:left }
+    </style>
+}
+
+@section mainContent {
+    <div @Html.ApplyPlatformNavigation("body")>
+
+    <h1>
+        Content type usage
+    </h1>
+    <p>
+        This report displays content items that use a selected content type
+    </p>
+
+    @using (Html.BeginForm("index", "contenttypeusagereport", FormMethod.Post))
+    {
+        <fieldset>
+            <legend>
+                Report Criteria
+            </legend>
+            <label for="contenttypeid">Content Type</label>
+            <select name="contenttypeid">
+                @foreach (var contentType in Model.ContentTypes)
+                {
+                    <option value="@contentType.ID" @(Model.SelectedId == contentType.ID ? "selected" : "" )>@(contentType.DisplayName ?? contentType.Name)</option>
+                }
+            </select>
+        </fieldset>
+        
+        <input
+            type="submit" 
+            name="showReport" 
+            id="showReport" 
+            value="Show Report"
+        />
+        
+    }
+ 
+    @if (Model.Submitted)
+    {
+        <div class="results">
+            <p>Number of content items found: @Model.ContentTypeUsages.Count()</p>
+        
+            <table cellspacing="0" 
+                    style="border-style: none; width: 100%; table-layout: fixed">
+                <tr>
+                    <th style="width: 150px;" scope="col">Id</th>
+                    <th style="width: 150px;" scope="col">Language</th>
+                    <th scope="col">Name</th>
+                </tr>
+                @foreach (var content in Model.ContentTypeUsages)
+                {
+                    <tr>
+                        <td>@content.ContentLink.ID</td>
+                        <td>@content.LanguageBranch</td>
+                        <td><a href="@(UIPathResolver.Instance.CombineWithUIAbsolute($"{content.ContentLink.ID}?language={content.LanguageBranch}#context=epi.cms.contentdata:///{content.ContentLink.ID}"))">
+                            @content.Name</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+}
